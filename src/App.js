@@ -6,10 +6,12 @@ import "./App.css";
 import { findRenderedComponentWithType } from "react-dom/test-utils";
 
 function App() {
+  //  Adding variables with useState
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  //  Fetching get request for all movies
   const fetchMoviesHandler = useCallback(async () => {
     setIsLoading(true);
     setError(null);
@@ -25,6 +27,7 @@ function App() {
 
       const loadedMovies = [];
 
+      //  Show datas as model
       for (const key in data) {
         loadedMovies.push({
           id: key,
@@ -33,7 +36,6 @@ function App() {
           releaseDate: data[key].releaseDate,
         });
       }
-
       setMovies(loadedMovies);
     } catch (error) {
       setError(error.message);
@@ -41,10 +43,12 @@ function App() {
     setIsLoading(false);
   }, []);
 
+  //  Run function when app.js first run
   useEffect(() => {
     fetchMoviesHandler();
   }, [fetchMoviesHandler]);
 
+  //  Send post request with some parameters
   async function addMovieHandler(movie) {
     console.log(movie);
     const response = await fetch(
@@ -63,6 +67,7 @@ function App() {
 
   let content = <p>Found no movies.</p>;
 
+  //  Handle conditions that we need to indicate {content}
   if (movies.length > 0) {
     content = <MoviesList movies={movies} />;
   }
